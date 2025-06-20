@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mantenimiento de Alquileres</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+  <h2 class="mb-4">🧾 Mantenimiento de Alquileres</h2>
+
+  <form th:action="@{/alquiler/guardar}" method="post" th:object="${alquiler}" class="border p-4 rounded bg-white shadow-sm">
+    <input type="hidden" th:field="*{idAlquiler}"/>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label>Fecha de alquiler</label>
+        <input type="date" th:field="*{fecha}" class="form-control" required />
+      </div>
+
+      <div class="col-md-4">
+        <label>Cliente</label>
+        <select th:field="*{cliente.idCliente}" class="form-select" required>
+          <option value="" disabled selected>Seleccione cliente</option>
+          <option th:each="cli : ${listaClientes}" th:value="${cli.idCliente}" th:text="${cli.nombre}"></option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label>Estado</label>
+        <select th:field="*{estado}" class="form-select" required>
+          <option value="" disabled selected>Seleccione estado</option>
+          <option value="Activo">Activo</option>
+          <option value="Devuelto">Devuelto</option>
+          <option value="Retrasado">Retrasado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">Grabar</button>
+      <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+  </form>
+
+  <hr class="my-4"/>
+
+  <h4 class="mb-3">📋 Lista de Alquileres</h4>
+  <table class="table table-bordered table-hover bg-white">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Estado</th>
+        <th>Cantidad Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${listaAlquileres}">
+        <td th:text="${item.idAlquiler}"></td>
+        <td th:text="${#dates.format(item.fecha, 'yyyy-MM-dd')}"></td>
+        <td th:text="${item.cliente.nombre}"></td>
+        <td th:text="${item.estado}"></td>
+        <td th:text="${item.total}"></td>
+        <td>
+          <a th:href="@{/alquiler/editar/{id}(id=${item.idAlquiler})}" class="btn btn-warning btn-sm">Editar</a>
+          <a th:href="@{/alquiler/eliminar/{id}(id=${item.idAlquiler})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro de eliminar?')">Eliminar</a>
+          <a th:href="@{/alquiler/detalle/{id}(id=${item.idAlquiler})}" class="btn btn-info btn-sm">Detalle</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mantenimiento de Clientes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+  <h2 class="mb-4 text-center">👤 Registro de Clientes</h2>
+
+  <form th:action="@{/cliente/guardar}" method="post" th:object="${cliente}" class="border p-4 rounded shadow-sm mb-4">
+    <input type="hidden" th:field="*{idCliente}" />
+
+    <div class="mb-3">
+      <label class="form-label">Nombre completo</label>
+      <input type="text" th:field="*{nombre}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Correo electrónico</label>
+      <input type="email" th:field="*{email}" class="form-control" required>
+    </div>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">Grabar</button>
+      <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+  </form>
+
+  <h4>📋 Lista de Clientes</h4>
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th class="text-center">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${listaClientes}">
+        <td th:text="${item.idCliente}"></td>
+        <td th:text="${item.nombre}"></td>
+        <td th:text="${item.email}"></td>
+        <td class="text-center">
+          <a th:href="@{/cliente/editar/{id}(id=${item.idCliente})}" class="btn btn-sm btn-outline-primary">Editar</a>
+          <a th:href="@{/cliente/eliminar/{id}(id=${item.idCliente})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro de eliminar este cliente?')">Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>

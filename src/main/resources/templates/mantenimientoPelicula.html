@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mantenimiento de Películas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+  <h2 class="mb-4 text-center">🎥 Registro de Películas</h2>
+
+  <form th:action="@{/pelicula/guardar}" method="post" th:object="${pelicula}" class="border p-4 rounded shadow-sm mb-4">
+    <input type="hidden" th:field="*{idPelicula}" />
+
+    <div class="mb-3">
+      <label class="form-label">Título</label>
+      <input type="text" th:field="*{titulo}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Género</label>
+      <input type="text" th:field="*{genero}" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Stock disponible</label>
+      <input type="number" min="0" th:field="*{stock}" class="form-control" required>
+    </div>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">Grabar</button>
+      <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+  </form>
+
+  <h4>📋 Lista de Películas</h4>
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Género</th>
+        <th>Stock</th>
+        <th class="text-center">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${listaPeliculas}">
+        <td th:text="${item.idPelicula}"></td>
+        <td th:text="${item.titulo}"></td>
+        <td th:text="${item.genero}"></td>
+        <td th:text="${item.stock}"></td>
+        <td class="text-center">
+          <a th:href="@{/pelicula/editar/{id}(id=${item.idPelicula})}" class="btn btn-sm btn-outline-primary">Editar</a>
+          <a th:href="@{/pelicula/eliminar/{id}(id=${item.idPelicula})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro de eliminar esta película?')">Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
